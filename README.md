@@ -203,3 +203,5 @@ _Not yet deployed. Fill in after deploying:_
 - [ ] Push to a public GitHub repository (`.env` files are gitignored — verify they weren't accidentally committed)
 - [ ] Deploy backend to Render, frontend to Vercel; update `CORS_ORIGIN` and `VITE_API_BASE_URL` to point at each other; update the Live Links section above
 - [ ] Re-test the deployed live links end-to-end, including camera/geolocation (requires HTTPS — see Deployment Notes)
+#   a t t e n d a n c e - m a n a g e m e n t - s y s t e m  
+ 
