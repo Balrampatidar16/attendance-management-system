@@ -1,0 +1,240 @@
+### Attendance Management System — REST Client sample requests
+### Requires the "REST Client" VS Code extension (or compatible).
+### This file grows across phases as new endpoints land.
+
+@baseUrl = http://localhost:5000/api/v1
+@accessToken = REPLACE_WITH_ACCESS_TOKEN_FROM_LOGIN_RESPONSE
+
+### Health check
+GET {{baseUrl}}/health
+
+### =========================
+### AUTH
+### =========================
+
+### Register a new employee (role always defaults to "employee")
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Jordan Lee",
+  "email": "jordan.lee@example.com",
+  "password": "Passw0rd!",
+  "department": "Engineering"
+}
+
+### Login — sets an httpOnly refreshToken cookie and returns an accessToken in the body
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "jordan.lee@example.com",
+  "password": "Passw0rd!"
+}
+
+### Get current user (paste accessToken from the login response above into @accessToken)
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{accessToken}}
+
+### Update own profile
+PATCH {{baseUrl}}/auth/update-profile
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Jordan A. Lee",
+  "department": "Platform Engineering"
+}
+
+### Change own password
+PATCH {{baseUrl}}/auth/change-password
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "oldPassword": "Passw0rd!",
+  "newPassword": "NewPassw0rd!"
+}
+
+### Refresh access token — reads the httpOnly refreshToken cookie set by /login
+### (Run this in a client that persists cookies between requests, e.g. VS Code REST Client does.)
+POST {{baseUrl}}/auth/refresh-token
+
+### Logout — clears the refreshToken cookie
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{accessToken}}
+
+### =========================
+### USERS (admin / manager)
+### =========================
+
+### List all users — admin only. Filters: role, department, isActive, search. Paginated.
+GET {{baseUrl}}/users?role=employee&page=1&limit=10
+Authorization: Bearer {{accessToken}}
+
+### Get my direct reports — manager or admin
+GET {{baseUrl}}/users/team
+Authorization: Bearer {{accessToken}}
+
+### Get a single user — admin (any), manager (own team only)
+GET {{baseUrl}}/users/REPLACE_WITH_USER_ID
+Authorization: Bearer {{accessToken}}
+
+### Update a user — admin only (role, department, manager, isActive)
+PATCH {{baseUrl}}/users/REPLACE_WITH_USER_ID
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "role": "manager",
+  "department": "Sales",
+  "isActive": true
+}
+
+### Soft-delete (deactivate) a user — admin only
+DELETE {{baseUrl}}/users/REPLACE_WITH_USER_ID
+Authorization: Bearer {{accessToken}}
+
+### RBAC sanity check — an employee token here must get a 403, not a user list
+GET {{baseUrl}}/users
+Authorization: Bearer REPLACE_WITH_AN_EMPLOYEE_ACCESS_TOKEN
+
+### =========================
+### ATTENDANCE
+### =========================
+### @selfie holds a real base64 JPEG data URL — paste one captured from the browser console:
+###   document.querySelector('canvas').toDataURL('image/jpeg', 0.7)
+@selfie = data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=
+
+### Punch in — employee only
+POST {{baseUrl}}/attendance/punch-in
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "selfie": "{{selfie}}",
+  "latitude": 22.7196,
+  "longitude": 75.8577,
+  "address": "Indore, MP, India"
+}
+
+### Punch out — employee only
+POST {{baseUrl}}/attendance/punch-out
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "selfie": "{{selfie}}",
+  "latitude": 22.7196,
+  "longitude": 75.8577,
+  "address": "Indore, MP, India"
+}
+
+### Today's attendance for the current user
+GET {{baseUrl}}/attendance/today
+Authorization: Bearer {{accessToken}}
+
+### My attendance history — filters: startDate, endDate, workStatus. Paginated.
+GET {{baseUrl}}/attendance/my?page=1&limit=10
+Authorization: Bearer {{accessToken}}
+
+### Team attendance — manager (own team) or admin
+GET {{baseUrl}}/attendance/team?page=1&limit=10
+Authorization: Bearer {{accessToken}}
+
+### All attendance — admin only
+GET {{baseUrl}}/attendance/all?page=1&limit=10
+Authorization: Bearer {{accessToken}}
+
+### Dashboard summary counts — scoped to caller's role
+GET {{baseUrl}}/attendance/stats/summary
+Authorization: Bearer {{accessToken}}
+
+### Single attendance record — scoped (self / own team / any for admin)
+GET {{baseUrl}}/attendance/REPLACE_WITH_ATTENDANCE_ID
+Authorization: Bearer {{accessToken}}
+
+### Verify (mark valid/invalid) — manager (own team) or admin
+PATCH {{baseUrl}}/attendance/REPLACE_WITH_ATTENDANCE_ID/verify
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "verificationStatus": "valid",
+  "remarks": "Selfie and location match office premises"
+}
+
+### =========================
+### OVERTIME
+### =========================
+
+### Request overtime — employee only. Only valid for a day with punch-out and >8 worked hours.
+POST {{baseUrl}}/overtime
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "attendanceId": "REPLACE_WITH_ATTENDANCE_ID",
+  "requestedHours": 1.5,
+  "reason": "Closed out a production incident after hours"
+}
+
+### My overtime requests — employee
+GET {{baseUrl}}/overtime/my?page=1&limit=10
+Authorization: Bearer {{accessToken}}
+
+### Pending overtime requests — manager (own team) or admin
+GET {{baseUrl}}/overtime/pending?page=1&limit=10
+Authorization: Bearer {{accessToken}}
+
+### All overtime requests — admin only
+GET {{baseUrl}}/overtime/all?page=1&limit=10
+Authorization: Bearer {{accessToken}}
+
+### Review (approve/reject) — manager (own team) or admin
+PATCH {{baseUrl}}/overtime/REPLACE_WITH_OVERTIME_ID/review
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "status": "approved",
+  "reviewComment": "Approved — confirmed against the incident timeline"
+}
+
+### =========================
+### REPORTS
+### =========================
+
+### Daily report — scoped. Defaults to today if ?date= is omitted.
+GET {{baseUrl}}/reports/daily?date=2026-08-07
+Authorization: Bearer {{accessToken}}
+
+### Range report — scoped. startDate/endDate required; optional userId (must be within scope).
+GET {{baseUrl}}/reports/range?startDate=2026-08-01&endDate=2026-08-07
+Authorization: Bearer {{accessToken}}
+
+### Export Excel — accepts the same ?date= or ?startDate=&endDate= as above
+GET {{baseUrl}}/reports/export/excel?date=2026-08-07
+Authorization: Bearer {{accessToken}}
+
+### Export PDF — accepts the same ?date= or ?startDate=&endDate= as above
+GET {{baseUrl}}/reports/export/pdf?date=2026-08-07
+Authorization: Bearer {{accessToken}}
+
+### =========================
+### NOTIFICATIONS
+### =========================
+### Created automatically when an overtime request is reviewed or an attendance record is
+### verified — delivered instantly over Socket.IO to the affected user, and listed here too.
+
+### My notifications (includes unreadCount)
+GET {{baseUrl}}/notifications?page=1&limit=10
+Authorization: Bearer {{accessToken}}
+
+### Mark one notification as read
+PATCH {{baseUrl}}/notifications/REPLACE_WITH_NOTIFICATION_ID/read
+Authorization: Bearer {{accessToken}}
+
+### Mark all notifications as read
+PATCH {{baseUrl}}/notifications/read-all
+Authorization: Bearer {{accessToken}}

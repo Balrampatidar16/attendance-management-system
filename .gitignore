@@ -1,0 +1,10 @@
+node_modules/
+.DS_Store
+*.log
+.vscode/
+.idea/
+
+# Environment variables (secrets) - never commit these
+.env
+.env.*
+!.env.example
