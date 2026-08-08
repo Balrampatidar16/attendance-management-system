@@ -1,12 +1,12 @@
 {
   "name": "attendance-management-backend",
   "version": "1.0.0",
-  "description": "Attendance Management System — backend API (Node.js, Express, MongoDB)",
+  "description": "Attendance Management System \u2014 backend API (Node.js, Express, MongoDB)",
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js",
-    "start": "node server.js",
+    "dev": "node api.js && nodemon server.js",
+    "start": "node api.js && node server.js",
     "seed": "node src/seeders/seed.js"
   },
   "dependencies": {
