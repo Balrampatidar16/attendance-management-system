@@ -1,0 +1,21 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "fix/ui",
+    "main",
+    "origin",
+    "uifix/mobilefirstui"
+  ],
+  "parent": {
+    "fix/ui": "main",
+    "main": null,
+    "origin": "main",
+    "uifix/mobilefirstui": "main"
+  },
+  "order": [
+    "main",
+    "fix/ui",
+    "origin",
+    "uifix/mobilefirstui"
+  ]
+}
