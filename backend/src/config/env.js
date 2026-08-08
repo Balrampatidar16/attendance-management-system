@@ -14,6 +14,8 @@ const envSchema = z.object({
   REFRESH_TOKEN_SECRET: z.string().min(20, 'REFRESH_TOKEN_SECRET must be at least 20 characters'),
   REFRESH_TOKEN_EXPIRY: z.string().default('7d'),
 
+  GOOGLE_CLIENT_ID: z.string().min(1, 'GOOGLE_CLIENT_ID is required'),
+
   CLOUDINARY_CLOUD_NAME: z.string().min(1, 'CLOUDINARY_CLOUD_NAME is required'),
   CLOUDINARY_API_KEY: z.string().min(1, 'CLOUDINARY_API_KEY is required'),
   CLOUDINARY_API_SECRET: z.string().min(1, 'CLOUDINARY_API_SECRET is required'),

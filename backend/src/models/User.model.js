@@ -17,7 +17,13 @@ const userSchema = new Schema(
       trim: true,
       index: true,
     },
-    password: { type: String, required: true, minlength: 8, select: false },
+    // Required only for local accounts — Google-authenticated users have no password of their own.
+    password: {
+      type: String,
+      required: [function passwordRequired() { return this.authProvider === 'local'; }, 'Password is required'],
+      minlength: 8,
+      select: false,
+    },
     role: {
       type: String,
       enum: ['employee', 'manager', 'admin'],
@@ -32,6 +38,9 @@ const userSchema = new Schema(
     avatar: { type: String, default: '' },
     isActive: { type: Boolean, default: true },
     refreshToken: { type: String, select: false },
+    authProvider: { type: String, enum: ['local', 'google'], default: 'local' },
+    // Sparse so multiple local-only users (googleId: undefined) don't collide on the unique index.
+    googleId: { type: String, unique: true, sparse: true, select: false },
   },
   { timestamps: true }
 );
@@ -44,7 +53,7 @@ userSchema.pre('save', async function preSave(next) {
     this.employeeId = `EMP-${String(seq).padStart(4, '0')}`;
   }
 
-  if (this.isModified('password')) {
+  if (this.isModified('password') && this.password) {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
