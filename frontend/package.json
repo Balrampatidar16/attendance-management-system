@@ -1,11 +1,11 @@
 {
   "name": "attendance-management-frontend",
   "version": "1.0.0",
-  "description": "Attendance Management System — frontend (React, Vite, Redux Toolkit)",
+  "description": "Attendance Management System \u2014 frontend (React, Vite, Redux Toolkit)",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "node init && vite",
+    "build": "node init && vite build",
     "preview": "vite preview",
     "lint": "eslint ."
   },
