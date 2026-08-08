@@ -22,6 +22,12 @@ export const loginSchema = z
   })
   .strict();
 
+export const googleAuthSchema = z
+  .object({
+    idToken: z.string().min(1, 'Google credential is required'),
+  })
+  .strict();
+
 export const updateProfileSchema = z
   .object({
     name: z.string().trim().min(2).max(100).optional(),

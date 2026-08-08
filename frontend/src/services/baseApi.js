@@ -15,7 +15,13 @@ const rawBaseQuery = fetchBaseQuery({
 
 // These endpoints must never trigger a refresh-and-retry: a 401 from login/register means bad
 // credentials, and a 401 from refresh-token itself means the session is genuinely over.
-const SKIP_REAUTH_PATHS = ['/auth/login', '/auth/register', '/auth/refresh-token', '/auth/logout'];
+const SKIP_REAUTH_PATHS = [
+  '/auth/login',
+  '/auth/register',
+  '/auth/google',
+  '/auth/refresh-token',
+  '/auth/logout',
+];
 
 const isSkipReauthUrl = (args) => {
   const url = typeof args === 'string' ? args : (args?.url ?? '');

@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
+import GoogleAuthButton from '../../components/auth/GoogleAuthButton';
 import { useLoginMutation } from '../../features/auth/authApi';
 import { setCredentials } from '../../features/auth/authSlice';
 import { ROLE_HOME_PATH } from '../../utils/constants';
@@ -76,6 +77,8 @@ export default function Login() {
       <Button type="submit" className="w-full" isLoading={isLoading}>
         Sign in
       </Button>
+
+      <GoogleAuthButton />
 
       <p className="text-sm text-center text-slate-500 dark:text-slate-400">
         Don&apos;t have an account?{' '}

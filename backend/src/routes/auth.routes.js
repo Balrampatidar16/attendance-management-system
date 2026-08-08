@@ -5,12 +5,14 @@ import { loginRateLimiter } from '../middlewares/rateLimit.middleware.js';
 import {
   registerSchema,
   loginSchema,
+  googleAuthSchema,
   updateProfileSchema,
   changePasswordSchema,
 } from '../validators/auth.validator.js';
 import {
   register,
   login,
+  googleAuth,
   logout,
   refreshTokenHandler,
   getMe,
@@ -22,6 +24,7 @@ const router = Router();
 
 router.post('/register', validate(registerSchema), register);
 router.post('/login', loginRateLimiter, validate(loginSchema), login);
+router.post('/google', loginRateLimiter, validate(googleAuthSchema), googleAuth);
 router.post('/logout', verifyJWT, logout);
 router.post('/refresh-token', refreshTokenHandler);
 router.get('/me', verifyJWT, getMe);

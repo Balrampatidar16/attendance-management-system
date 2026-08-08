@@ -61,12 +61,12 @@ export default function AllUsers() {
   };
 
   const columns = [
-    { key: 'employeeId', header: 'ID', render: (row) => row.employeeId },
+    { key: 'employeeId', header: 'ID', hideOnMobile: true, render: (row) => row.employeeId },
     { key: 'name', header: 'Name', render: (row) => row.name },
-    { key: 'email', header: 'Email', render: (row) => row.email },
+    { key: 'email', header: 'Email', hideOnMobile: true, render: (row) => row.email },
     { key: 'role', header: 'Role', render: (row) => <Badge tone="slate">{row.role}</Badge> },
-    { key: 'department', header: 'Department', render: (row) => row.department || '-' },
-    { key: 'manager', header: 'Manager', render: (row) => row.manager?.name ?? '-' },
+    { key: 'department', header: 'Department', hideOnMobile: true, render: (row) => row.department || '-' },
+    { key: 'manager', header: 'Manager', hideOnMobile: true, render: (row) => row.manager?.name ?? '-' },
     {
       key: 'status',
       header: 'Status',
@@ -108,20 +108,20 @@ export default function AllUsers() {
       </div>
 
       <Card>
-        <div className="flex flex-wrap items-end justify-between gap-4 mb-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-4">
           <SearchBar
             value={filters.search}
             onChange={(search) => handleFilterChange({ search })}
             placeholder="Search name, email, or ID…"
           />
-          <div className="flex gap-3">
+          <div className="grid grid-cols-2 gap-3 sm:flex">
             <Select
               label="Role"
               placeholder="All roles"
               value={filters.role}
               onChange={(e) => handleFilterChange({ role: e.target.value })}
               options={ROLE_OPTIONS}
-              className="max-w-[9rem]"
+              className="sm:max-w-[9rem]"
             />
             <Select
               label="Status"
@@ -132,7 +132,7 @@ export default function AllUsers() {
                 { value: 'true', label: 'Active' },
                 { value: 'false', label: 'Inactive' },
               ]}
-              className="max-w-[8rem]"
+              className="sm:max-w-[8rem]"
             />
           </div>
         </div>

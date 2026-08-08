@@ -32,6 +32,14 @@ export const login = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, 'Login successful', { user: sanitizeUser(user), accessToken }));
 });
 
+export const googleAuth = asyncHandler(async (req, res) => {
+  const { user, accessToken, refreshToken } = await authService.loginWithGoogle(req.body.idToken);
+  res.cookie('refreshToken', refreshToken, refreshCookieOptions);
+  return res
+    .status(200)
+    .json(new ApiResponse(200, 'Google authentication successful', { user: sanitizeUser(user), accessToken }));
+});
+
 export const logout = asyncHandler(async (req, res) => {
   await authService.logoutUser(req.user._id);
   const clearOptions = { ...refreshCookieOptions };
