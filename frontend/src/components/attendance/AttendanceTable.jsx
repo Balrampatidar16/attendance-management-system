@@ -16,11 +16,16 @@ export default function AttendanceTable({
   const columns = [
     ...(showEmployee ? [{ key: 'employee', header: 'Employee', render: (row) => row.user?.name ?? '-' }] : []),
     { key: 'date', header: 'Date', render: (row) => formatDate(row.date) },
-    { key: 'punchIn', header: 'Punch In', render: (row) => formatTime(row.punchIn?.time) },
-    { key: 'punchOut', header: 'Punch Out', render: (row) => formatTime(row.punchOut?.time) },
+    { key: 'punchIn', header: 'Punch In', hideOnMobile: true, render: (row) => formatTime(row.punchIn?.time) },
+    { key: 'punchOut', header: 'Punch Out', hideOnMobile: true, render: (row) => formatTime(row.punchOut?.time) },
     { key: 'hours', header: 'Hours', render: (row) => formatHours(row.totalWorkingHours) },
     { key: 'status', header: 'Status', render: (row) => <Badge status={row.workStatus} /> },
-    { key: 'verification', header: 'Verification', render: (row) => <Badge status={row.verificationStatus} /> },
+    {
+      key: 'verification',
+      header: 'Verification',
+      hideOnMobile: true,
+      render: (row) => <Badge status={row.verificationStatus} />,
+    },
     ...(hasActions
       ? [
           {

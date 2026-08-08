@@ -37,9 +37,9 @@ export default function TeamAttendance() {
       </div>
 
       <Card>
-        <div className="flex flex-wrap items-end justify-between gap-4 mb-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-4">
           <DateRangeFilter startDate={filters.startDate} endDate={filters.endDate} onChange={handleFilterChange} />
-          <div className="flex gap-3">
+          <div className="grid grid-cols-2 gap-3 sm:flex">
             <Select
               label="Status"
               placeholder="All statuses"
@@ -50,7 +50,7 @@ export default function TeamAttendance() {
                 { value: WORK_STATUS.INCOMPLETE, label: 'Incomplete' },
                 { value: WORK_STATUS.IN_PROGRESS, label: 'In progress' },
               ]}
-              className="max-w-[10rem]"
+              className="sm:max-w-[10rem]"
             />
             <Select
               label="Verification"
@@ -62,7 +62,7 @@ export default function TeamAttendance() {
                 { value: VERIFICATION_STATUS.VALID, label: 'Valid' },
                 { value: VERIFICATION_STATUS.INVALID, label: 'Invalid' },
               ]}
-              className="max-w-[10rem]"
+              className="sm:max-w-[10rem]"
             />
           </div>
         </div>

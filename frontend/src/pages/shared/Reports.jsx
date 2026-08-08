@@ -25,7 +25,7 @@ export default function Reports({ title = 'Reports', description = 'Attendance r
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-xl font-semibold text-slate-900 dark:text-white">{title}</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">{description}</p>
@@ -34,7 +34,7 @@ export default function Reports({ title = 'Reports', description = 'Attendance r
       </div>
 
       <Card>
-        <div className="flex flex-wrap items-end justify-between gap-4 mb-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-4">
           <div className="flex gap-2">
             <Button variant={mode === 'daily' ? 'primary' : 'secondary'} onClick={() => setMode('daily')}>
               Daily
@@ -50,7 +50,7 @@ export default function Reports({ title = 'Reports', description = 'Attendance r
               label="Date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="max-w-[10rem]"
+              className="sm:max-w-[10rem]"
             />
           ) : (
             <DateRangeFilter

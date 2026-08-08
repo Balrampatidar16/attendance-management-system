@@ -39,7 +39,7 @@ export default function MyAttendance() {
       </div>
 
       <Card>
-        <div className="flex flex-wrap items-end justify-between gap-4 mb-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-4">
           <DateRangeFilter startDate={filters.startDate} endDate={filters.endDate} onChange={handleFilterChange} />
           <Select
             label="Status"
@@ -51,7 +51,7 @@ export default function MyAttendance() {
               { value: WORK_STATUS.INCOMPLETE, label: 'Incomplete' },
               { value: WORK_STATUS.IN_PROGRESS, label: 'In progress' },
             ]}
-            className="max-w-[10rem]"
+            className="sm:max-w-[10rem]"
           />
         </div>
 
