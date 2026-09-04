@@ -2,7 +2,7 @@
 
 A MERN-stack app to track employee attendance using live selfie + geolocation, with separate dashboards for Employee, Manager, and Admin, plus an overtime approval workflow.
 
-**Live demo:** https://attendance-management-system-ten-amber.vercel.app
+**Live demo:** https://attendance-management-system-nine-tan.vercel.app/login
 
 ---
 
